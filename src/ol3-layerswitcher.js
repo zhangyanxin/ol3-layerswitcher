@@ -198,16 +198,17 @@
             } else {
                 input.type = 'checkbox';
             }
-            input.id = lyrId;
+            //当一个页面里出现多个map时，需要使用class来代替id,不然浏览器监听的事件总会指向第一个map里的切换控件里的元素
+            input.className = lyrId;
             input.checked = lyr.get('visible');
             input.onchange = function(e) {
                 this_.setVisible_(lyr, e.target.checked);
             };
-            li.appendChild(input);
-
-            label.htmlFor = lyrId;
-            label.innerHTML = lyrTitle;
-
+            //使用label包含checkbox的方式来取代label的for功能，更简练、精准
+            label.appendChild(input);
+            var txt = document.createTextNode(lyrTitle);
+            label.appendChild(txt);
+          
             var rsl = this.getMap().getView().getResolution();
             if (rsl > lyr.getMaxResolution() || rsl < lyr.getMinResolution()){
                 label.className += ' disabled';
